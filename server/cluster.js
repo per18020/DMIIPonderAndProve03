@@ -1,9 +1,19 @@
 class Cluster {
     constructor() {
+        this.testCount = 0
+        this.failedTests = []
         this.increment = 0
         this.blockSize = 100000000
         this.startTime = new Date("2020-10-02T18:00:00.000Z")
         this.endTime = new Date("2020-10-03T18:00:00.000Z")
+    }
+
+    updateTestCount({testCount, didSucceed}) {
+        if (didSucceed) {
+            this.testCount = testCount > this.testCount ? testCount : this.testCount
+        } else {
+            this.failedTests.push(testCount)
+        }
     }
 
     shouldWait() {

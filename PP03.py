@@ -4,7 +4,8 @@ from datetime import datetime
 import requests
 import time
 
-BASEURL = "https://discrete-math-2-ponder-prove-3.herokuapp.com"
+# BASEURL = "https://discrete-math-2-ponder-prove-3.herokuapp.com"
+BASEURL = "http://localhost:5000"
 
 def getValidatedInt(msg, validationFunction):
     while True:
@@ -30,6 +31,9 @@ def shouldContinue():
     response = requests.get(BASEURL + "/api/shouldContinue").json()
     return response['continue']
 
+def sendStatus(data):
+    requests.post(BASEURL + "/api/status", { "testCount":data[0], "didSucceed":data[1] })
+
 print("Getting configuration from the server...")
 
 PISQR2 = pi / sqrt(2)
@@ -39,7 +43,7 @@ BLOCKSIZE = getConfig()['blockSize']
 def run(iteration):
     for index in range(iteration * BLOCKSIZE, (iteration + 1) * BLOCKSIZE):
         lhs = sin(index * PISQR2) * sin((index + 1) * PISQR2)
-        if (not ((lhs <= 0) ^ (lhs >= 0))):
+        if (not ((lhs <= 0) ^ (lhs > 0))):
             return (index, False)
     return (index, True)
 
@@ -50,4 +54,6 @@ while shouldWait():
 print("Started at " + datetime.now().strftime('%d/%m/%Y %H:%M:%S'))
 while shouldContinue():
     output = run(next())
+    sendStatus(output)
     print(str(output) + " " + datetime.now().strftime('%d/%m/%Y %H:%M:%S'))
+print("Stopped at " + datetime.now().strftime('%d/%m/%Y %H:%M:%S'))

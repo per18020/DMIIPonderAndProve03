@@ -29,4 +29,13 @@ app.get('/api/next', (req, res) => {
     res.json({ next: cluster.next() })
 })
 
+app.post('/api/status', (req, res) => {
+    if (Object.keys(req.body).length >= 2) {
+        cluster.updateTestCount(req.body)
+        res.sendStatus(200)
+    } else {
+        res.sendStatus(400)
+    }
+})
+
 app.listen(PORT, () => { console.log('Listening on ', PORT) })
