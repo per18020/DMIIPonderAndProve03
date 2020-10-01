@@ -32,13 +32,14 @@ def shouldContinue():
 
 print("Getting configuration from the server...")
 
-SQR2 = sqrt(2)
+PISQR2 = pi / sqrt(2)
 BLOCKSIZE = getConfig()['blockSize']
 
 @jit
 def run(iteration):
     for index in range(iteration * BLOCKSIZE, (iteration + 1) * BLOCKSIZE):
-        if (not ((sin(index * pi / SQR2) * sin((index + 1) * pi / SQR2) <= 0) or (sin(index * pi / SQR2) * sin((index + 1) * pi / SQR2) >= 0))):
+        lhs = sin(index * PISQR2) * sin((index + 1) * PISQR2)
+        if (not ((lhs <= 0) ^ (lhs >= 0))):
             return (index, False)
     return (index, True)
 
