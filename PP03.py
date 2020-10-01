@@ -1,54 +1,32 @@
-from math import sqrt, floor, sin, pi, ceil
+from numba import jit
+from math import sqrt, sin, pi
+from datetime import datetime
 
 SQR2 = sqrt(2)
+BLOCKSIZE = 100000000
 
-def computeFinite(testFunction, iterator):
-    out = set()
-    for number in iterator:
-        if testFunction(number):
-            out.add(number)
-    return out
+def getValidatedInt(msg, validationFunction):
+    while True:
+        try:
+            userInput = int(input(msg))
+        except:
+            continue
+        if validationFunction(userInput):
+            return userInput
 
+@jit
+def run(iteration):
+    for index in range(iteration * BLOCKSIZE, (iteration + 1) * BLOCKSIZE):
+        if (not ((sin(index * pi / SQR2) * sin((index + 1) * pi / SQR2) <= 0) or (sin(index * pi / SQR2) * sin((index + 1) * pi / SQR2) >= 0))):
+            return (index, False)
+    return (index, True)
 
-def union(testFunctionOne, testFunctionTwo):
-    return lambda target: testFunctionOne(target) or testFunctionTwo(target)
+clusterSize = getValidatedInt("Enter cluster size: ", lambda clusterSize: not (clusterSize < 0))
+clusterIndex = getValidatedInt("Enter cluster index: ", lambda clusterIndex: not (clusterIndex > clusterSize - 1 or clusterIndex < 0))
 
-
-def intersection(testFunctionOne, testFunctionTwo):
-    return lambda target: testFunctionOne(target) and testFunctionTwo(target)
-
-
-def complement(testFunction):
-    return lambda target: not testFunction(target)
-
-
-def testA(target):
-    return sin(target * pi / SQR2) * sin((target + 1) * pi / SQR2) <= 0
-
-def testB(target):
-    return sin(target * pi / SQR2) * sin((target + 1) * pi / SQR2) >= 0
-
-print(
-    computeFinite(testA, range(0, 100))
-)
-
-print(
-    computeFinite(testB, range(0, 100))
-)
-
-
-ABUnion = union(testA, testB)
-
-def doWork(iterator):
-    for number in iterator:
-        print(number)
-        if (not ABUnion(number)): return False
-    return True
-
-
-blockSize = 10000
-
-iterations = 1
+print("Started at " + datetime.now().strftime('%d/%m/%Y %H:%M:%S'))
+iteration = 0
 while True:
-    print(doWork(range(blockSize * (iterations - 1), blockSize * iterations)))
-    iterations += 1
+    output = run(clusterIndex + (iteration * clusterSize))
+    print(str(output) + " " + datetime.now().strftime('%d/%m/%Y %H:%M:%S'))
+    iteration += 1
