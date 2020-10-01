@@ -4,13 +4,7 @@ from datetime import datetime
 import requests
 import time
 
-print("Getting configuration from the server...")
-
-baseURL = "https://discrete-math-2-ponder-prove-3.herokuapp.com"
-config = requests.get(baseURL + "/api/config").json()
-
-SQR2 = sqrt(2)
-BLOCKSIZE = config['blockSize']
+BASEURL = "https://discrete-math-2-ponder-prove-3.herokuapp.com"
 
 def getValidatedInt(msg, validationFunction):
     while True:
@@ -22,16 +16,24 @@ def getValidatedInt(msg, validationFunction):
             return userInput
         
 def next():
-    response = requests.get(baseURL + "/api/next").json()
+    response = requests.get(BASEURL + "/api/next").json()
     return response['next']
 
+def getConfig():
+    return requests.get(BASEURL + "/api/config").json()
+    
 def shouldWait():
-    response = requests.get(baseURL + "/api/shouldWait").json()
+    response = requests.get(BASEURL + "/api/shouldWait").json()
     return response['wait']
 
 def shouldContinue():
-    response = requests.get(baseURL + "/api/shouldContinue").json()
+    response = requests.get(BASEURL + "/api/shouldContinue").json()
     return response['continue']
+
+print("Getting configuration from the server...")
+
+SQR2 = sqrt(2)
+BLOCKSIZE = getConfig()['blockSize']
 
 @jit
 def run(iteration):
