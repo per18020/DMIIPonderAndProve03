@@ -6,7 +6,7 @@ import time
 
 print("Getting configuration from the server...")
 
-baseURL = "http://localhost:5000"
+baseURL = "https://discrete-math-2-ponder-prove-3.herokuapp.com"
 config = requests.get(baseURL + "/api/config").json()
 
 SQR2 = sqrt(2)
