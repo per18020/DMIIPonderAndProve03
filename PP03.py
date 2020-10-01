@@ -1,9 +1,16 @@
 from numba import jit
 from math import sqrt, sin, pi
 from datetime import datetime
+import requests
+import time
+
+print("Getting configuration from the server...")
+
+baseURL = "http://localhost:5000"
+config = requests.get(baseURL + "/api/config").json()
 
 SQR2 = sqrt(2)
-BLOCKSIZE = 100000000
+BLOCKSIZE = config['blockSize']
 
 def getValidatedInt(msg, validationFunction):
     while True:
@@ -13,6 +20,18 @@ def getValidatedInt(msg, validationFunction):
             continue
         if validationFunction(userInput):
             return userInput
+        
+def next():
+    response = requests.get(baseURL + "/api/next").json()
+    return response['next']
+
+def shouldWait():
+    response = requests.get(baseURL + "/api/shouldWait").json()
+    return response['wait']
+
+def shouldContinue():
+    response = requests.get(baseURL + "/api/shouldContinue").json()
+    return response['continue']
 
 @jit
 def run(iteration):
@@ -21,12 +40,11 @@ def run(iteration):
             return (index, False)
     return (index, True)
 
-clusterSize = getValidatedInt("Enter cluster size: ", lambda clusterSize: not (clusterSize < 0))
-clusterIndex = getValidatedInt("Enter cluster index: ", lambda clusterIndex: not (clusterIndex > clusterSize - 1 or clusterIndex < 0))
+while shouldWait():
+    print("Waiting to start... checking again in 30 seconds")
+    time.sleep(30)
 
 print("Started at " + datetime.now().strftime('%d/%m/%Y %H:%M:%S'))
-iteration = 0
-while True:
-    output = run(clusterIndex + (iteration * clusterSize))
+while shouldContinue():
+    output = run(next())
     print(str(output) + " " + datetime.now().strftime('%d/%m/%Y %H:%M:%S'))
-    iteration += 1
