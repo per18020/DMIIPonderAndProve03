@@ -18,7 +18,7 @@ function getConfig() {
 function update() {
     fetch('/api/status').then(res => res.json()).then((res) => {
         setStatusDisplay(['waitingDisplay', 'runningDisplay', 'finishedDisplay'], false)
-        if (Object.keys(config).length >= 3) {
+        if (config) {
             const currentTime = new Date()
             if (currentTime < new Date(config.startTime)) {
                 setStatusDisplay(['waitingDisplay'], true)
