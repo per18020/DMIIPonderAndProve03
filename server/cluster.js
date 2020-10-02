@@ -9,6 +9,9 @@ class Cluster {
     }
 
     updateTestCount({testCount, didSucceed}) {
+        testCount = Number.parseInt(testCount)
+        didSucceed = didSucceed.toLowerCase() == 'true'
+        if (this.shouldContinue() == false) return;
         if (didSucceed) {
             this.testCount = testCount > this.testCount ? testCount : this.testCount
         } else {

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DM II PP03</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-narrow">
+                    <h1 class="title">DM II PP03</h1>
+                    <h4 class="title is-4">Live Statistics</h4>
+                    <div class="field">
+                        <label class="label">Tests Run</label>
+                        <div class="control">
+                            <input id="testCountDisplay" class="input" type="text" disabled>  
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Tests Failed</label>
+                        <div class="control">
+                            <input id="testFailedDisplay" class="input" type="text" disabled>  
+                        </div>
+                    </div>
+                    <h4 class="title is-4">Configuration</h4>
+                    <div class="field">
+                        <label class="label">Start Time</label>
+                        <div class="control">
+                            <input id="startTimeDisplay" class="input" type="text" disabled>  
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">End Time</label>
+                        <div class="control">
+                            <input id="endTimeDisplay" class="input" type="text" disabled>  
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Block Size</label>
+                        <div class="control">
+                            <input id="blockSizeDisplay" class="input" type="text" disabled> 
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="./index.js"></script>
+</body>
+</html>
