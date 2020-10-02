@@ -20,10 +20,6 @@ class Cluster {
     }
 
     shouldWait() {
-
-        // TODO REMOVE THIS
-        return false
-
         const currentTime = new Date()
         return currentTime < this.startTime
     }
