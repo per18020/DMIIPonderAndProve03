@@ -4,8 +4,8 @@ from datetime import datetime
 import requests
 import time
 
-# BASEURL = "https://discrete-math-2-ponder-prove-3.herokuapp.com"
-BASEURL = "http://localhost:5000"
+BASEURL = "https://discrete-math-2-ponder-prove-3.herokuapp.com"
+# BASEURL = "http://localhost:5000"
 
 def getValidatedInt(msg, validationFunction):
     while True:
